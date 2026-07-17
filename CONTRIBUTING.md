@@ -30,7 +30,7 @@ HestiaCP templates live in `deploy/hestiacp/`. If a deployment template changes,
 - Keep documentation in English unless a page is explicitly language-specific.
 - Use `menu.md` for multi-page documentation.
 - Use relative Markdown links between documentation pages.
-- Update the MDDocs skill when changing documentation standards or AI workflows.
+- Update the MDDocs skill in [devioarts/skills](https://github.com/devioarts/skills/tree/main/mddocs) when changing documentation standards or AI workflows.
 
 ## Pull requests
 

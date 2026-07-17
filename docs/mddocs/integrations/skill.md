@@ -6,19 +6,13 @@ title: Agent skill
 
 MDDocs includes a portable Agent Skill that teaches AI agents how to create, improve, and maintain high-quality MDDocs-compatible project documentation.
 
-The skill lives in:
+The skill is maintained in a separate skills repository, not in this repository:
 
 ```text
-skills/mddocs/SKILL.md
+https://github.com/devioarts/skills/tree/main/mddocs
 ```
 
 It is intentionally vendor-neutral. The same folder shape can be used by Codex, Claude, or another agent system that understands `SKILL.md`-based skills.
-
-Canonical source:
-
-```text
-https://github.com/devioarts/mddocs/tree/main/skills/mddocs
-```
 
 ## Purpose
 
@@ -37,45 +31,36 @@ The skill defines the MDDocs documentation standard:
 - validate documentation quality after edits
 - when connected to a MDDocs MCP server, use its tools directly (`get_page`, `search_docs`, `update_page`, `append_to_page`, `validate_documentation`, ...) and prefer targeted updates over full rewrites when documentation already exists
 
-## Install or update from GitHub
+## Install or update
 
-Install or update the skill from the canonical GitHub repository so the local agent always uses the current MDDocs standard.
-
-For Codex:
+Install or update the skill with the [`skills`](https://www.npmjs.com/package/skills) CLI so the local agent always uses the current MDDocs standard. Run it ad hoc via `npx`, no install required:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/devioarts/mddocs/main/scripts/install-codex-skill.sh | bash
+# Claude Code
+npx skills add devioarts/skills --skill mddocs -a claude-code
+
+# Codex
+npx skills add devioarts/skills --skill mddocs -a codex
 ```
 
-From a local MDDocs checkout:
+Add `-g` before `-a` to install into your user/global skills directory instead of the current project:
 
 ```bash
-bash scripts/install-codex-skill.sh
+npx skills add devioarts/skills --skill mddocs -g -a claude-code
 ```
 
-Run the same command again to update the skill.
-
-For other agents, copy the whole `skills/mddocs` directory from the repository into that agent's skill directory. Keep the `references/` directory with `SKILL.md`.
-
-For Claude Code:
+Update the installed skill later with:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/devioarts/mddocs/main/scripts/install-claude-skill.sh | bash
+npx skills update mddocs
 ```
 
-From a local MDDocs checkout:
+For other agents, or to install manually, copy the whole `mddocs` folder from [devioarts/skills](https://github.com/devioarts/skills/tree/main/mddocs) into that agent's skill directory. Keep the `references/` directory with `SKILL.md`:
 
-```bash
-bash scripts/install-claude-skill.sh
-```
-
-The default Claude target is:
-
-```text
-~/.claude/skills/mddocs
-```
-
-For a project-local Claude skill, copy `skills/mddocs` into `.claude/skills/mddocs` inside the target repository.
+- Claude Code (personal): `~/.claude/skills/mddocs`
+- Claude Code (project-local): `.claude/skills/mddocs`
+- Codex (personal): `~/.codex/skills/mddocs`
+- Codex (project-local): `.agents/skills/mddocs`
 
 ## Documentation workflow
 
@@ -87,7 +72,7 @@ Generate documentation locally in the project being documented. Do not write dir
 
 Recommended flow:
 
-1. Install or update the MDDocs skill from GitHub.
+1. Install or update the MDDocs skill from the [devioarts/skills](https://github.com/devioarts/skills) repository.
 2. Open the target project locally.
 3. Ask the agent to inspect the project and create MDDocs-compatible documentation in a local output folder.
 4. Have the agent validate links, commands, configuration values, and page quality.
@@ -124,6 +109,6 @@ The skill includes focused references:
 
 ## Repository role
 
-The repo-local skill is the source of truth for the MDDocs standard. It can be copied, installed, or packaged for different agent environments without changing the documentation format.
+The [devioarts/skills](https://github.com/devioarts/skills) repository is the source of truth for the MDDocs skill. It can be installed via the `skills` CLI, copied, or packaged for different agent environments without changing the documentation format.
 
-When using it outside this repository, copy the whole `skills/mddocs` folder, not just `SKILL.md`, so the `references/` files stay available.
+When installing manually, copy the whole `mddocs` folder, not just `SKILL.md`, so the `references/` files stay available.

@@ -39,47 +39,20 @@ composer install
 | `app/Mcp/` | MCP tools and server factory. |
 | `bin/` | CLI entry points. |
 | `public/` | Web root, CSS, JS, and HTTP entry points. |
-| `scripts/` | Development and installation helper scripts. |
 
 ## Skill installer
 
-The Codex skill installer lives at:
-
-```text
-scripts/install-codex-skill.sh
-```
-
-Run it from a local checkout:
+The MDDocs Agent Skill is maintained separately in [devioarts/skills](https://github.com/devioarts/skills/tree/main/mddocs), not in this repository. Install or update it with the [`skills`](https://www.npmjs.com/package/skills) CLI:
 
 ```bash
-bash scripts/install-codex-skill.sh
+# Claude Code
+npx skills add devioarts/skills --skill mddocs -a claude-code
+
+# Codex
+npx skills add devioarts/skills --skill mddocs -a codex
 ```
 
-Or install directly from GitHub:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/devioarts/mddocs/main/scripts/install-codex-skill.sh | bash
-```
-
-The Claude Code skill installer lives at:
-
-```text
-scripts/install-claude-skill.sh
-```
-
-Run it from a local checkout:
-
-```bash
-bash scripts/install-claude-skill.sh
-```
-
-Or install directly from GitHub:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/devioarts/mddocs/main/scripts/install-claude-skill.sh | bash
-```
-
-The Claude installer targets `~/.claude/skills/mddocs` by default.
+Add `-g` to install into your user/global skills directory instead of the current project. See [Agent skill](integrations/skill.md) for details.
 
 ## Recommended change workflow
 

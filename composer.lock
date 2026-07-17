@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58c2dbb4021ac6e2883ab1a7d09ec4f3",
+    "content-hash": "2e3407ab2d5cd3e9ab17f8951cb67c93",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -343,16 +343,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.5",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09"
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9365d578a9fd1552ad6ca9c3cb530708526feb09",
-                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dad89620b7a6edb60c15858442eb2e408b45d8f4",
+                "reference": "dad89620b7a6edb60c15858442eb2e408b45d8f4",
                 "shasum": ""
             },
             "require": {
@@ -442,7 +442,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.5"
+                "source": "https://github.com/guzzle/psr7/tree/2.13.0"
             },
             "funding": [
                 {
@@ -458,7 +458,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-13T01:27:20+00:00"
+            "time": "2026-07-16T22:23:49+00:00"
         },
         {
             "name": "league/commonmark",
@@ -2539,6 +2539,67 @@
                 "source": "https://github.com/webmozarts/assert/tree/2.4.1"
             },
             "time": "2026-06-15T15:31:57+00:00"
+        },
+        {
+            "name": "zenstruck/commonmark-extensions",
+            "version": "1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zenstruck/commonmark-extensions.git",
+                "reference": "ab5aac33b2394304dd8892b83c3ef339ba443777"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zenstruck/commonmark-extensions/zipball/ab5aac33b2394304dd8892b83c3ef339ba443777",
+                "reference": "ab5aac33b2394304dd8892b83c3ef339ba443777",
+                "shasum": ""
+            },
+            "require": {
+                "league/commonmark": "^2.4",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.4",
+                "phpunit/phpunit": "^9.6.0",
+                "symfony/phpunit-bridge": "^6.1|^7.0",
+                "symfony/var-dumper": "^5.4|^6.0|^7.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zenstruck\\CommonMark\\Extension\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Bond",
+                    "email": "kevinbond@gmail.com"
+                }
+            ],
+            "description": "A collection of CommonMark extensions.",
+            "homepage": "https://github.com/zenstruck/commonmark-extensions",
+            "support": {
+                "issues": "https://github.com/zenstruck/commonmark-extensions/issues",
+                "source": "https://github.com/zenstruck/commonmark-extensions/tree/1.x"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kbond",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nikophil",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-16T19:02:21+00:00"
         }
     ],
     "packages-dev": [
@@ -4307,9 +4368,18 @@
             "time": "2025-11-17T20:03:58+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "zenstruck/commonmark-extensions",
+            "version": "1.9999999.9999999.9999999-dev",
+            "alias": "1.0.0",
+            "alias_normalized": "1.0.0.0"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "zenstruck/commonmark-extensions": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

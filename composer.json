@@ -17,12 +17,13 @@
     },
     "require": {
         "php": "^8.4",
-        "league/commonmark": "^2.7",
+        "league/commonmark": "^2.8",
         "symfony/yaml": "^7.0",
         "symfony/finder": "^7.0",
         "symfony/filesystem": "^7.0",
         "guzzlehttp/guzzle": "^7.0",
-        "mcp/sdk": "^0.1"
+        "mcp/sdk": "^0.1",
+        "zenstruck/commonmark-extensions": "1.x-dev as 1.0.0"
     },
     "autoload": {
         "psr-4": {

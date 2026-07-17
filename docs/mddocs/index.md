@@ -26,7 +26,7 @@ MDDocs is a good fit for project documentation, internal guides, plugin document
 - optional GitHub storage through the GitHub Contents API
 - MCP stdio server for AI clients
 - MCP HTTP endpoint with an optional bearer token
-- portable Agent Skill for Codex, Claude, and other skill-aware agents
+- portable Agent Skill for Codex, Claude, and other skill-aware agents, maintained in [devioarts/skills](https://github.com/devioarts/skills/tree/main/mddocs)
 - simple frontend with no build step
 
 ## Project layout
@@ -37,7 +37,6 @@ bin/        CLI scripts
 config/     configuration
 docs/       Markdown documentation
 public/     web root
-skills/     portable Agent Skills
 var/        cache, logs, and backups
 ```
 

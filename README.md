@@ -41,47 +41,33 @@ For very small documentation sets, `menu.md` is optional. If a documentation dir
 
 ## Agent Skill
 
-MDDocs includes a portable Agent Skill for Codex, Claude, and other `SKILL.md`-aware agents:
+MDDocs has a portable Agent Skill for Codex, Claude, and other `SKILL.md`-aware agents. It now lives in a separate skills repository:
 
 ```text
-skills/mddocs/SKILL.md
+https://github.com/devioarts/skills/tree/main/mddocs
 ```
 
 Use it when asking an agent to create or maintain MDDocs-compatible project documentation.
 
-The canonical skill source is:
-
-```text
-https://github.com/devioarts/mddocs/tree/main/skills/mddocs
-```
-
-Copy or install that folder into the skill location used by your agent environment, or reference it directly when the agent supports repository-local skills.
-
-Install or update the skill for Codex from GitHub:
+Install it with the [`skills`](https://www.npmjs.com/package/skills) CLI, run ad hoc via `npx`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/devioarts/mddocs/main/scripts/install-codex-skill.sh | bash
+# Claude Code
+npx skills add devioarts/skills --skill mddocs -a claude-code
+
+# Codex
+npx skills add devioarts/skills --skill mddocs -a codex
 ```
 
-From a local MDDocs checkout:
+Add `-g` to install into your user/global skills directory instead of the current project.
+
+Update the skill later with:
 
 ```bash
-bash scripts/install-codex-skill.sh
+npx skills update mddocs
 ```
 
-Install or update the skill for Claude Code from GitHub:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/devioarts/mddocs/main/scripts/install-claude-skill.sh | bash
-```
-
-From a local MDDocs checkout:
-
-```bash
-bash scripts/install-claude-skill.sh
-```
-
-The Claude installer targets the personal skills directory `~/.claude/skills/mddocs` by default.
+You can also copy the `mddocs` folder directly into your agent's skills directory (`~/.claude/skills/mddocs`, `.claude/skills/mddocs`, `~/.codex/skills/mddocs`, or `.agents/skills/mddocs`). Keep the whole folder together, including `references/`.
 
 Create documentation locally in the project being documented, review it, then publish the finished documentation folder to the MDDocs server and run `composer build-search`.
 

@@ -1,0 +1,58 @@
+{
+    "name": "devioarts/mddocs",
+    "description": "MDDocs Markdown documentation viewer with MCP editing server",
+    "type": "project",
+    "license": "proprietary",
+    "homepage": "https://github.com/devioarts/mddocs",
+    "keywords": [
+        "documentation",
+        "markdown",
+        "mcp",
+        "ai",
+        "agent-skills"
+    ],
+    "support": {
+        "issues": "https://github.com/devioarts/mddocs/issues",
+        "source": "https://github.com/devioarts/mddocs"
+    },
+    "require": {
+        "php": "^8.4",
+        "league/commonmark": "^2.7",
+        "symfony/yaml": "^7.0",
+        "symfony/finder": "^7.0",
+        "symfony/filesystem": "^7.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "mcp/sdk": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bud\\DocsApp\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bud\\DocsApp\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "php -S 127.0.0.1:8080 -t public public/index.php"
+        ],
+        "build-search": "php bin/build-search.php",
+        "mcp": "php bin/mcp-server.php",
+        "lint": "find app public bin config -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "test": "phpunit"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.4"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11"
+    }
+}

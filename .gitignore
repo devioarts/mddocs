@@ -1,0 +1,15 @@
+/.idea/
+/vendor/
+/docs/test/
+/.env
+/.env.*
+/var/cache/*
+/var/backups/*
+/var/log/*
+/var/mcp-sessions/*
+/var/server.log
+/var/server.pid
+!/var/cache/.gitkeep
+!/var/backups/.gitkeep
+!/var/log/.gitkeep
+!/var/mcp-sessions/.gitkeep

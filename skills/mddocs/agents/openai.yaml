@@ -1,0 +1,4 @@
+interface:
+  display_name: "MDDocs"
+  short_description: "Create high-quality MDDocs project docs"
+  default_prompt: "Use $mddocs to create or improve project documentation from the source files."

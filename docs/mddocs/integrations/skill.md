@@ -87,14 +87,10 @@ When an MCP client is already connected to a MDDocs server (see [MCP server](mcp
 ## Example request
 
 ```text
-Use the MDDocs skill.
-Create MDDocs-compatible documentation for this project in ./docs/my-project.
-Inspect the project first, then create practical maintainer documentation.
-Choose the right document type for each page: README, API docs, runbook, architecture doc, onboarding guide, user guide, or operations guide.
-Avoid generic README-style prose; organize pages around setup, configuration, usage, architecture, deployment, and troubleshooting where the source supports them.
+Use the MDDocs skill to document this project in ./docs/my-project.
 ```
 
-The agent should inspect the project, choose a suitable documentation structure, write the Markdown files, create `menu.md` when useful, and report validation steps.
+The rest is the skill's job, not the prompt's: inspecting the project, picking the right document type per page (README, API docs, runbook, architecture doc, onboarding guide, user guide, operations guide), avoiding generic README-style prose, writing `menu.md` when useful, and reporting validation steps.
 
 ## References
 

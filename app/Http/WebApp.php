@@ -122,6 +122,7 @@ final class WebApp
         $outline = $this->renderer->outline($markdown);
         $breadcrumb = $this->docs->breadcrumb($documentation, $path);
         $previousNext = $this->docs->previousNext($documentation, $path);
+        $lastModified = $this->docs->pageLastModified($documentation, $path);
 
         $body = '<div class="app-shell" data-doc="' . $this->e($documentation) . '">';
         $body .= '<aside class="sidebar" id="sidebar"><div class="sidebar-inner"><div class="sidebar-title">' . $this->e($menu->title) . '</div>';
@@ -130,6 +131,7 @@ final class WebApp
         $body .= '<main class="content">';
         $body .= $this->breadcrumb($documentation, $breadcrumb);
         $body .= '<article class="markdown-body">' . $html . '</article>';
+        $body .= $this->lastModified($lastModified);
         $body .= $this->previousNext($documentation, $previousNext['prev'], $previousNext['next']);
         $body .= '</main>';
         $body .= '<aside class="toc"><div class="toc-inner"><div class="toc-title">On this page</div>' . $this->outline($outline) . '</div></aside>';
@@ -170,8 +172,10 @@ final class WebApp
     private function layout(string $title, ?string $documentation, string $body): void
     {
         $docAttribute = $documentation !== null ? ' data-current-doc="' . $this->e($documentation) . '"' : '';
+        $themeAttribute = ($_COOKIE['docs-theme'] ?? '') === 'dark' ? ' data-theme="dark"' : '';
+        $layoutAttribute = ($_COOKIE['docs-layout'] ?? '') === 'full' ? ' data-layout="full"' : '';
 
-        echo '<!doctype html><html lang="en"><head><meta charset="utf-8">';
+        echo '<!doctype html><html lang="en"' . $themeAttribute . $layoutAttribute . '><head><meta charset="utf-8">';
         echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
         echo '<title>' . $this->e($title) . '</title>';
         echo '<link rel="stylesheet" href="/assets/vendor/prism/prism-tomorrow.min.css">';
@@ -182,6 +186,7 @@ final class WebApp
         echo '<button class="icon-button menu-toggle" type="button" aria-label="Menu" data-menu-toggle><span></span><span></span><span></span></button>';
         echo '<a class="brand" href="/">Docs</a>';
         echo '<button class="search-trigger" type="button" data-search-open><span>Search documentation</span><kbd>/</kbd></button>';
+        echo '<button class="icon-button layout-toggle" type="button" aria-label="Toggle full-width layout" data-layout-toggle></button>';
         echo '<button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle></button>';
         echo '</header>';
         echo $body;
@@ -268,6 +273,15 @@ final class WebApp
         }
 
         return $html . '</nav>';
+    }
+
+    private function lastModified(?int $timestamp): string
+    {
+        if ($timestamp === null) {
+            return '';
+        }
+
+        return '<p class="last-modified muted">Last updated on ' . $this->e(date('F j, Y', $timestamp)) . '</p>';
     }
 
     private function previousNext(string $documentation, ?MenuItem $previous, ?MenuItem $next): string

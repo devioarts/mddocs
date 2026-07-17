@@ -125,6 +125,19 @@ input {
   box-shadow: inset -5px -4px 0 currentColor;
 }
 
+.layout-toggle::before {
+  content: "";
+  width: 16px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+  box-shadow: inset 4px 0 0 -1px currentColor;
+}
+
+:root[data-layout="full"] .layout-toggle::before {
+  box-shadow: none;
+}
+
 .search-trigger {
   display: flex;
   align-items: center;
@@ -236,6 +249,14 @@ kbd {
   max-width: 860px;
   width: 100%;
   padding-bottom: 70px;
+}
+
+:root[data-layout="full"] .app-shell {
+  max-width: none;
+}
+
+:root[data-layout="full"] .content {
+  max-width: none;
 }
 
 .breadcrumb {
@@ -488,6 +509,11 @@ kbd {
 
 .muted {
   color: var(--muted);
+}
+
+.last-modified {
+  margin: 24px 0 0;
+  font-size: 13px;
 }
 
 .prev-next {

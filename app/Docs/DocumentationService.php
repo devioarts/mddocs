@@ -65,6 +65,11 @@ final class DocumentationService
         return $this->storage->pageExists(PathGuard::documentation($documentation), PathGuard::pagePath($path));
     }
 
+    public function pageLastModified(string $documentation, string $path): ?int
+    {
+        return $this->storage->pageLastModified(PathGuard::documentation($documentation), PathGuard::pagePath($path));
+    }
+
     public function writePage(string $documentation, string $path, string $content): void
     {
         $this->storage->writePage(PathGuard::documentation($documentation), PathGuard::pagePath($path), rtrim($content) . "\n");

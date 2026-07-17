@@ -1,12 +1,12 @@
 (function () {
   const root = document.documentElement;
-  const savedTheme = localStorage.getItem("docs-theme");
 
-  if (savedTheme) {
-    root.dataset.theme = savedTheme;
+  function setCookie(name, value) {
+    document.cookie = name + "=" + value + "; path=/; max-age=31536000; SameSite=Lax";
   }
 
   const themeToggle = document.querySelector("[data-theme-toggle]");
+  const layoutToggle = document.querySelector("[data-layout-toggle]");
   const menuToggle = document.querySelector("[data-menu-toggle]");
   const dialog = document.querySelector("[data-search-dialog]");
   const input = document.querySelector("[data-search-input]");
@@ -18,7 +18,13 @@
   themeToggle?.addEventListener("click", function () {
     const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
-    localStorage.setItem("docs-theme", next);
+    setCookie("docs-theme", next);
+  });
+
+  layoutToggle?.addEventListener("click", function () {
+    const next = root.dataset.layout === "full" ? "current" : "full";
+    root.dataset.layout = next;
+    setCookie("docs-layout", next);
   });
 
   menuToggle?.addEventListener("click", function () {

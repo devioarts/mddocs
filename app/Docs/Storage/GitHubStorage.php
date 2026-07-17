@@ -117,6 +117,33 @@ final class GitHubStorage implements DocumentationStorage
         $this->writeFile($documentation, $path, $content, sprintf('docs: update %s', $path));
     }
 
+    public function pageLastModified(string $documentation, string $path): ?int
+    {
+        $filePath = $this->documentPath($documentation, PathGuard::pagePath($path));
+
+        try {
+            $commits = $this->request('GET', sprintf(
+                '/repos/%s/%s/commits?path=%s&sha=%s&per_page=1',
+                $this->config['owner'],
+                $this->config['repo'],
+                rawurlencode($filePath),
+                rawurlencode($this->config['branch']),
+            ));
+        } catch (RuntimeException) {
+            return null;
+        }
+
+        $date = $commits[0]['commit']['committer']['date'] ?? $commits[0]['commit']['author']['date'] ?? null;
+
+        if (! is_string($date)) {
+            return null;
+        }
+
+        $timestamp = strtotime($date);
+
+        return $timestamp !== false ? $timestamp : null;
+    }
+
     public function readAsset(string $documentation, string $path): string
     {
         return $this->readFile($documentation, PathGuard::assetPath($path));

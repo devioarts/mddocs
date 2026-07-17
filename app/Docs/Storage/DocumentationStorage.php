@@ -28,6 +28,8 @@ interface DocumentationStorage
 
     public function writePage(string $documentation, string $path, string $content): void;
 
+    public function pageLastModified(string $documentation, string $path): ?int;
+
     public function readAsset(string $documentation, string $path): string;
 
     public function uploadAsset(string $documentation, string $path, string $binaryContent): void;

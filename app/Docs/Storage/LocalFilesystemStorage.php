@@ -93,6 +93,14 @@ final class LocalFilesystemStorage implements DocumentationStorage
         $this->writeFile($documentation, PathGuard::pagePath($path), $content);
     }
 
+    public function pageLastModified(string $documentation, string $path): ?int
+    {
+        $file = $this->documentRoot(PathGuard::documentation($documentation)) . '/' . PathGuard::pagePath($path);
+        $mtime = is_file($file) ? filemtime($file) : false;
+
+        return $mtime !== false ? $mtime : null;
+    }
+
     public function readAsset(string $documentation, string $path): string
     {
         return $this->readFile($documentation, PathGuard::assetPath($path));

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e3407ab2d5cd3e9ab17f8951cb67c93",
+    "content-hash": "563c06aff02e6870a7d0a2358ca1929e",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -4368,14 +4368,7 @@
             "time": "2025-11-17T20:03:58+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "zenstruck/commonmark-extensions",
-            "version": "1.9999999.9999999.9999999-dev",
-            "alias": "1.0.0",
-            "alias_normalized": "1.0.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "zenstruck/commonmark-extensions": 20

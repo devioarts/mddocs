@@ -23,7 +23,7 @@
         "symfony/filesystem": "^7.0",
         "guzzlehttp/guzzle": "^7.0",
         "mcp/sdk": "^0.1",
-        "zenstruck/commonmark-extensions": "1.x-dev as 1.0.0"
+        "zenstruck/commonmark-extensions": "1.x-dev"
     },
     "autoload": {
         "psr-4": {

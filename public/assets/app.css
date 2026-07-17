@@ -317,7 +317,7 @@ kbd {
 .markdown-body p,
 .markdown-body ul,
 .markdown-body ol,
-.markdown-body table,
+.markdown-body .table-wrap,
 .markdown-body pre,
 .markdown-body blockquote {
   margin: 0 0 18px;
@@ -449,11 +449,14 @@ kbd {
   color: var(--text);
 }
 
+.markdown-body .table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .markdown-body table {
   width: 100%;
   border-collapse: collapse;
-  display: block;
-  overflow-x: auto;
 }
 
 .markdown-body th,

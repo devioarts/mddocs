@@ -45,8 +45,16 @@ final class MarkdownRenderer
     public function render(string $markdown): string
     {
         $parts = FrontMatter::split($markdown);
+        $html = (string) $this->converter->convert($parts['body']);
 
-        return (string) $this->converter->convert($parts['body']);
+        return $this->wrapTables($html);
+    }
+
+    private function wrapTables(string $html): string
+    {
+        $html = str_replace('<table>', '<div class="table-wrap"><table>', $html);
+
+        return str_replace('</table>', '</table></div>', $html);
     }
 
     /**

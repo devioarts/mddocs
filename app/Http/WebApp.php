@@ -126,7 +126,7 @@ final class WebApp
 
         $body = '<div class="app-shell" data-doc="' . $this->e($documentation) . '">';
         $body .= '<aside class="sidebar" id="sidebar"><div class="sidebar-inner"><div class="sidebar-title">' . $this->e($menu->title) . '</div>';
-        $body .= $this->navigation($documentation, $menu->items, $path);
+        $body .= $this->navigation($documentation, $menu->items, $path, $this->collapsedNavKeys());
         $body .= '</div></aside>';
         $body .= '<main class="content">';
         $body .= $this->breadcrumb($documentation, $breadcrumb);
@@ -205,14 +205,26 @@ final class WebApp
 
     /**
      * @param list<MenuItem> $items
+     * @param list<string> $collapsedKeys
      */
-    private function navigation(string $documentation, array $items, string $currentPath): string
+    private function navigation(string $documentation, array $items, string $currentPath, array $collapsedKeys = [], string $keyPrefix = ''): string
     {
         $html = '<nav class="nav-tree">';
 
         foreach ($items as $item) {
-            $active = $item->path === $currentPath ? ' is-active' : '';
-            $html .= '<div class="nav-item' . $active . '">';
+            $hasChildren = $item->children !== [];
+            $isActive = $item->path === $currentPath;
+            $key = $keyPrefix . '/' . $this->slug($item->title);
+            $containsActive = $hasChildren && $this->containsPath($item->children, $currentPath);
+            $isCollapsed = $hasChildren && ! $isActive && ! $containsActive && in_array($key, $collapsedKeys, true);
+
+            $classes = 'nav-item';
+            $classes .= $isActive ? ' is-active' : '';
+            $classes .= $hasChildren ? ' has-children' : '';
+            $classes .= $isCollapsed ? ' is-collapsed' : '';
+
+            $html .= '<div class="' . $classes . '"' . ($hasChildren ? ' data-nav-key="' . $this->e($key) . '"' : '') . '>';
+            $html .= '<div class="nav-row">';
 
             if ($item->path !== null) {
                 $html .= sprintf('<a href="%s">%s</a>', $this->docs->urlFor($documentation, $item->path), $this->e($item->title));
@@ -220,14 +232,62 @@ final class WebApp
                 $html .= '<span>' . $this->e($item->title) . '</span>';
             }
 
-            if ($item->children !== []) {
-                $html .= $this->navigation($documentation, $item->children, $currentPath);
+            if ($hasChildren) {
+                $html .= '<button type="button" class="nav-toggle" data-nav-toggle aria-expanded="' . ($isCollapsed ? 'false' : 'true') . '" aria-label="Toggle section"></button>';
+            }
+
+            $html .= '</div>';
+
+            if ($hasChildren) {
+                $html .= $this->navigation($documentation, $item->children, $currentPath, $collapsedKeys, $key);
             }
 
             $html .= '</div>';
         }
 
         return $html . '</nav>';
+    }
+
+    /**
+     * @param list<MenuItem> $items
+     */
+    private function containsPath(array $items, string $currentPath): bool
+    {
+        foreach ($items as $item) {
+            if ($item->path === $currentPath) {
+                return true;
+            }
+
+            if ($item->children !== [] && $this->containsPath($item->children, $currentPath)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function slug(string $value): string
+    {
+        $slug = strtolower($value);
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug) ?? '';
+
+        return trim($slug, '-');
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function collapsedNavKeys(): array
+    {
+        $raw = $_COOKIE['docs-nav-collapsed'] ?? '';
+
+        if ($raw === '') {
+            return [];
+        }
+
+        $decoded = json_decode($raw, true);
+
+        return is_array($decoded) ? array_values(array_filter($decoded, 'is_string')) : [];
     }
 
     /**

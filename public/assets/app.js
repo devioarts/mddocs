@@ -39,6 +39,59 @@
     }
   });
 
+  function collapsedNavKeys() {
+    return Array.from(document.querySelectorAll(".sidebar .nav-item.has-children.is-collapsed"))
+      .map((item) => item.dataset.navKey)
+      .filter(Boolean);
+  }
+
+  function persistNavState() {
+    setCookie("docs-nav-collapsed", encodeURIComponent(JSON.stringify(collapsedNavKeys())));
+  }
+
+  document.addEventListener("click", function (event) {
+    const target = event.target;
+
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const toggle = target.closest("[data-nav-toggle]");
+    const label = target.closest(".nav-row > span");
+    const trigger = toggle || label;
+    const item = trigger?.closest(".nav-item.has-children");
+
+    if (!item) {
+      return;
+    }
+
+    event.preventDefault();
+    const collapsed = item.classList.toggle("is-collapsed");
+    item.querySelector(":scope > .nav-row > [data-nav-toggle]")?.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    persistNavState();
+  });
+
+  function updateActiveNavItem(pathname) {
+    document.querySelectorAll(".sidebar .nav-item.is-active").forEach((item) => item.classList.remove("is-active"));
+
+    const activeLink = Array.from(document.querySelectorAll(".sidebar .nav-row > a")).find((link) => link.pathname === pathname);
+
+    if (!activeLink) {
+      return;
+    }
+
+    const activeItem = activeLink.closest(".nav-item");
+    activeItem?.classList.add("is-active");
+
+    let ancestor = activeItem?.parentElement?.closest(".nav-item.has-children");
+
+    while (ancestor) {
+      ancestor.classList.remove("is-collapsed");
+      ancestor.querySelector(":scope > .nav-row > [data-nav-toggle]")?.setAttribute("aria-expanded", "true");
+      ancestor = ancestor.parentElement?.closest(".nav-item.has-children");
+    }
+  }
+
   function openSearch() {
     if (!dialog || !input) {
       return;
@@ -129,38 +182,166 @@
       (target instanceof HTMLElement && target.isContentEditable);
   }
 
-  const tocLinks = Array.from(document.querySelectorAll(".toc-links a"));
-  const headings = tocLinks
-    .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
-    .filter(Boolean);
+  let tocObserver = null;
+  let tocScrollHandler = null;
 
-  if ("IntersectionObserver" in window && headings.length) {
-    const observer = new IntersectionObserver(function (entries) {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+  function setupToc() {
+    if (tocObserver) {
+      tocObserver.disconnect();
+      tocObserver = null;
+    }
 
-      if (!visible) {
+    if (tocScrollHandler) {
+      window.removeEventListener("scroll", tocScrollHandler);
+      tocScrollHandler = null;
+    }
+
+    const tocLinks = Array.from(document.querySelectorAll(".toc-links a"));
+    const headings = tocLinks
+      .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+      .filter(Boolean);
+
+    if ("IntersectionObserver" in window && headings.length) {
+      tocObserver = new IntersectionObserver(function (entries) {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+        if (!visible) {
+          return;
+        }
+
+        tocLinks.forEach((link) => {
+          link.classList.toggle("is-active", link.hash === "#" + visible.target.id);
+        });
+      }, { rootMargin: "-90px 0px -70% 0px", threshold: 0.01 });
+
+      headings.forEach((heading) => tocObserver.observe(heading));
+    }
+
+    if (tocLinks.length) {
+      const lastLink = tocLinks[tocLinks.length - 1];
+
+      tocScrollHandler = function () {
+        const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+
+        if (atBottom) {
+          tocLinks.forEach((link) => link.classList.toggle("is-active", link === lastLink));
+        }
+      };
+
+      window.addEventListener("scroll", tocScrollHandler, { passive: true });
+    }
+  }
+
+  setupToc();
+
+  const contentEl = document.querySelector(".content");
+  const tocEl = document.querySelector(".toc-inner");
+  const appShell = document.querySelector(".app-shell");
+
+  function isPjaxable(anchor) {
+    if (!appShell || !contentEl) {
+      return false;
+    }
+
+    if (anchor.target === "_blank" || anchor.hasAttribute("download")) {
+      return false;
+    }
+
+    if (anchor.origin !== window.location.origin) {
+      return false;
+    }
+
+    if (anchor.pathname === "/" || anchor.pathname.startsWith("/_asset/") || anchor.pathname === "/search") {
+      return false;
+    }
+
+    return true;
+  }
+
+  document.addEventListener("click", function (event) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
+
+    if (!anchor || !isPjaxable(anchor)) {
+      return;
+    }
+
+    if (anchor.pathname === window.location.pathname && anchor.search === window.location.search) {
+      return;
+    }
+
+    event.preventDefault();
+    closeSearch();
+    navigateTo(anchor.href);
+  });
+
+  window.addEventListener("popstate", function () {
+    navigateTo(window.location.href, false);
+  });
+
+  let navToken = 0;
+
+  async function navigateTo(url, push) {
+    const shouldPush = push !== false;
+    const token = ++navToken;
+
+    root.classList.add("is-loading");
+
+    try {
+      const response = await fetch(url, { headers: { "X-Requested-With": "fetch" } });
+
+      if (!response.ok) {
+        throw new Error("Navigation request failed");
+      }
+
+      const html = await response.text();
+
+      if (token !== navToken) {
         return;
       }
 
-      tocLinks.forEach((link) => {
-        link.classList.toggle("is-active", link.hash === "#" + visible.target.id);
-      });
-    }, { rootMargin: "-90px 0px -70% 0px", threshold: 0.01 });
+      const parsed = new DOMParser().parseFromString(html, "text/html");
+      const newShell = parsed.querySelector(".app-shell");
+      const newContent = parsed.querySelector(".content");
 
-    headings.forEach((heading) => observer.observe(heading));
-  }
-
-  if (tocLinks.length) {
-    const lastLink = tocLinks[tocLinks.length - 1];
-
-    window.addEventListener("scroll", function () {
-      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-
-      if (atBottom) {
-        tocLinks.forEach((link) => link.classList.toggle("is-active", link === lastLink));
+      if (!newShell || !newContent || !appShell || newShell.dataset.doc !== appShell.dataset.doc) {
+        window.location.href = url;
+        return;
       }
-    }, { passive: true });
+
+      document.title = parsed.title;
+      contentEl.innerHTML = newContent.innerHTML;
+
+      const newToc = parsed.querySelector(".toc-inner");
+
+      if (tocEl && newToc) {
+        tocEl.innerHTML = newToc.innerHTML;
+      }
+
+      if (shouldPush) {
+        history.pushState({}, "", url);
+      }
+
+      updateActiveNavItem(new URL(url, window.location.href).pathname);
+      window.scrollTo(0, 0);
+      document.body.classList.remove("nav-open");
+
+      if (window.Prism) {
+        Prism.highlightAllUnder(contentEl);
+      }
+
+      setupToc();
+    } catch (error) {
+      window.location.href = url;
+    } finally {
+      if (token === navToken) {
+        root.classList.remove("is-loading");
+      }
+    }
   }
 })();

@@ -79,6 +79,32 @@ input {
   backdrop-filter: blur(10px);
 }
 
+html.is-loading::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  animation: docs-nav-progress 900ms ease-in-out infinite;
+}
+
+@keyframes docs-nav-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .brand {
   margin-right: auto;
   color: var(--text);
@@ -217,8 +243,14 @@ kbd {
   border-left: 1px solid var(--line);
 }
 
-.nav-item > a,
-.nav-item > span,
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-row > a,
+.nav-row > span,
 .toc-links a {
   display: block;
   border-radius: 6px;
@@ -226,22 +258,64 @@ kbd {
   text-decoration: none;
 }
 
-.nav-item > a,
-.nav-item > span {
+.nav-row > a,
+.nav-row > span {
+  flex: 1;
+  min-width: 0;
   padding: 6px 8px;
   font-size: 14px;
   line-height: 1.35;
 }
 
-.nav-item > span {
+.nav-row > span {
   color: var(--text);
   font-weight: 650;
 }
 
-.nav-item.is-active > a {
+.nav-item.has-children > .nav-row > span {
+  cursor: pointer;
+}
+
+.nav-item.is-active > .nav-row > a {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent-strong);
   font-weight: 700;
+}
+
+.nav-toggle {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.nav-toggle:hover {
+  background: color-mix(in srgb, var(--line) 60%, transparent);
+  color: var(--text);
+}
+
+.nav-toggle::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 120ms ease;
+}
+
+.nav-toggle[aria-expanded="false"]::before {
+  transform: rotate(-45deg);
+}
+
+.nav-item.has-children.is-collapsed > .nav-tree {
+  display: none;
 }
 
 .content {

@@ -43,6 +43,8 @@
 
 html {
   scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -52,6 +54,8 @@ body {
   color: var(--text);
   font-size: 16px;
   line-height: 1.6;
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 a {
@@ -215,6 +219,7 @@ kbd {
   top: 82px;
   max-height: calc(100vh - 100px);
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .sidebar {
@@ -407,6 +412,7 @@ kbd {
 
 .markdown-body pre {
   overflow: auto;
+  overscroll-behavior-x: contain;
   padding: 16px;
   border: 1px solid var(--code-line);
   border-radius: 8px;
@@ -526,6 +532,7 @@ kbd {
 .markdown-body .table-wrap {
   max-width: 100%;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 
 .markdown-body table {

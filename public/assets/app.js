@@ -271,7 +271,14 @@
       return;
     }
 
-    if (anchor.pathname === window.location.pathname && anchor.search === window.location.search) {
+    const samePage = anchor.pathname === window.location.pathname && anchor.search === window.location.search;
+
+    if (samePage) {
+      if (anchor.hash && anchor.hash !== window.location.hash) {
+        return;
+      }
+
+      event.preventDefault();
       return;
     }
 

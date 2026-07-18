@@ -87,7 +87,7 @@ final class WebApp
         $body = '<main class="home"><h1>Documentation</h1>';
 
         if ($documentations === []) {
-            $body .= '<p>No documentation exists yet. Add a directory under <code>docs/</code> with Markdown files. Use <code>menu.md</code> when you want explicit navigation.</p>';
+            $body .= '<p>No documentation exists yet. Add a directory under <code>docs/</code> with Markdown files. Use <code>.menu.md</code> when you want explicit navigation.</p>';
         } else {
             $body .= '<ul class="doc-list">';
 

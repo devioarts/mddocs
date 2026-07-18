@@ -65,7 +65,7 @@ final class LocalFilesystemStorage implements DocumentationStorage
         }
 
         $files = [];
-        $finder = (new Finder())->files()->in($root)->name('*.md')->notName('menu.md')->ignoreDotFiles(true);
+        $finder = (new Finder())->files()->in($root)->name('*.md')->notName(PathGuard::menuPath())->ignoreDotFiles(true);
 
         foreach ($finder as $file) {
             $files[] = str_replace('\\', '/', $file->getRelativePathname());
@@ -151,7 +151,7 @@ final class LocalFilesystemStorage implements DocumentationStorage
             return false;
         }
 
-        if (is_file($root . '/menu.md')) {
+        if (is_file($root . '/' . PathGuard::menuPath())) {
             return true;
         }
 

@@ -19,7 +19,7 @@ It is intentionally vendor-neutral. The same folder shape can be used by Codex, 
 The skill defines the MDDocs documentation standard:
 
 - store documentation as plain Markdown
-- use `menu.md` for explicit multi-page navigation
+- use `.menu.md` for explicit multi-page navigation
 - allow small documentation sets with only `README.md` or `index.md`
 - keep links relative
 - inspect source files before writing
@@ -90,7 +90,7 @@ When an MCP client is already connected to a MDDocs server (see [MCP server](mcp
 Use the MDDocs skill to document this project in ./docs/my-project.
 ```
 
-The rest is the skill's job, not the prompt's: inspecting the project, picking the right document type per page (README, API docs, runbook, architecture doc, onboarding guide, user guide, operations guide), avoiding generic README-style prose, writing `menu.md` when useful, and reporting validation steps.
+The rest is the skill's job, not the prompt's: inspecting the project, picking the right document type per page (README, API docs, runbook, architecture doc, onboarding guide, user guide, operations guide), avoiding generic README-style prose, writing `.menu.md` when useful, and reporting validation steps.
 
 ## References
 

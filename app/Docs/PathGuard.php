@@ -8,6 +8,8 @@ use InvalidArgumentException;
 
 final class PathGuard
 {
+    private const MENU_FILENAME = '.menu.md';
+
     public static function documentation(string $documentation): string
     {
         $documentation = trim($documentation);
@@ -32,18 +34,18 @@ final class PathGuard
             $path .= '.md';
         }
 
-        self::assertRelativePath($path);
-
-        if (basename($path) === 'menu.md') {
-            throw new InvalidArgumentException('menu.md must be edited through menu methods.');
+        if (basename($path) === self::MENU_FILENAME) {
+            throw new InvalidArgumentException(self::MENU_FILENAME . ' must be edited through menu methods.');
         }
+
+        self::assertRelativePath($path);
 
         return $path;
     }
 
     public static function menuPath(): string
     {
-        return 'menu.md';
+        return self::MENU_FILENAME;
     }
 
     public static function assetPath(string $path): string

@@ -76,18 +76,24 @@ final class PathGuardTest extends TestCase
         PathGuard::pagePath($path);
     }
 
+    public function test_page_path_allows_menu_md_as_a_regular_page(): void
+    {
+        // menu.md is an ordinary filename; only .menu.md is reserved for navigation.
+        self::assertSame('menu.md', PathGuard::pagePath('menu.md'));
+    }
+
     public function test_page_path_rejects_menu_file(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        PathGuard::pagePath('menu.md');
+        PathGuard::pagePath('.menu.md');
     }
 
     public function test_page_path_rejects_menu_file_in_any_subdirectory(): void
     {
         // basename() only looks at the final path segment, so this is
-        // rejected too, not just menu.md at the documentation root.
+        // rejected too, not just .menu.md at the documentation root.
         $this->expectException(InvalidArgumentException::class);
-        PathGuard::pagePath('sub/menu.md');
+        PathGuard::pagePath('sub/.menu.md');
     }
 
     public function test_asset_path_requires_assets_prefix(): void
@@ -106,6 +112,6 @@ final class PathGuardTest extends TestCase
 
     public function test_menu_path_is_fixed(): void
     {
-        self::assertSame('menu.md', PathGuard::menuPath());
+        self::assertSame('.menu.md', PathGuard::menuPath());
     }
 }

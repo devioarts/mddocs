@@ -86,7 +86,7 @@ final class GitHubStorage implements DocumentationStorage
 
             $relative = substr($path, strlen($prefix));
 
-            if ($relative !== 'menu.md') {
+            if ($relative !== PathGuard::menuPath()) {
                 $files[] = $relative;
             }
         }

@@ -54,8 +54,8 @@ For production or shared environments, set `MCP_BEARER_TOKEN`.
 | `create_page` | Creates a new Markdown page. |
 | `update_page` | Replaces an existing page. |
 | `append_to_page` | Appends content to a page. |
-| `get_menu` | Reads `menu.md`. |
-| `update_menu` | Updates `menu.md`. |
+| `get_menu` | Reads `.menu.md`. |
+| `update_menu` | Updates `.menu.md`. |
 | `upload_asset` | Uploads an asset to documentation. |
 | `validate_documentation` | Validates links and menu entries. |
 | `rebuild_search_index` | Rebuilds the search index. |

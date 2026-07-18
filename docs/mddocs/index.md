@@ -19,7 +19,7 @@ MDDocs is a good fit for project documentation, internal guides, plugin document
 ## Core features
 
 - Markdown rendering through CommonMark
-- navigation controlled by `menu.md`
+- navigation controlled by `.menu.md`
 - breadcrumb, sidebar navigation, and page outline
 - full-text search across documentation
 - local storage in the `docs/` directory
@@ -47,7 +47,7 @@ Each documentation set is a separate directory in `docs/`. The directory name is
 ```text
 docs/
   mddocs/
-    menu.md
+    .menu.md
     index.md
     quick-start.md
 ```

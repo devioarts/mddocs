@@ -73,6 +73,6 @@ It validates Composer metadata, installs dependencies, lints PHP files, runs the
 
 - documentation should be fast and readable
 - content should remain in Markdown
-- navigation should be explicit through `menu.md`
+- navigation should be explicit through `.menu.md`
 - AI edits should be traceable through the audit log
 - production deployment should not require a complex build pipeline

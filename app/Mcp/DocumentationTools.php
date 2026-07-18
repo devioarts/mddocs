@@ -75,7 +75,7 @@ final class DocumentationTools
     }
 
     /**
-     * Creates a new Markdown page. Update menu.md separately if it should appear in navigation.
+     * Creates a new Markdown page. Update the menu (.menu.md) separately if it should appear in navigation.
      *
      * @return array{ok: bool, path: string}
      */
@@ -127,7 +127,7 @@ final class DocumentationTools
     }
 
     /**
-     * Reads menu.md.
+     * Reads the navigation menu (.menu.md).
      */
     public function getMenu(string $documentation): string
     {
@@ -135,16 +135,16 @@ final class DocumentationTools
     }
 
     /**
-     * Replaces menu.md.
+     * Replaces the navigation menu (.menu.md).
      *
      * @return array{ok: bool}
      */
     public function updateMenu(string $documentation, string $content): array
     {
-        $this->backup($documentation, 'menu.md', $this->docs->rawMenu($documentation));
+        $this->backup($documentation, PathGuard::menuPath(), $this->docs->rawMenu($documentation));
         $this->docs->writeMenu($documentation, $content);
         $this->search->rebuild($documentation);
-        $this->audit('update_menu', $documentation, 'menu.md');
+        $this->audit('update_menu', $documentation, PathGuard::menuPath());
 
         return ['ok' => true];
     }
